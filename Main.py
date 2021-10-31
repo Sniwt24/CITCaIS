@@ -56,7 +56,7 @@ class DialogApp(QtWidgets.QDialog, SaveBDFrm.Ui_DBDialog):  # Форма сох�
 
 ###########################  изменение параметров ввода ############################3
    def ChangeInputFunc(self):
-     if self.DBRb.isChecked() :
+     if self.DBRb.isChecked():
        self.RowRSSB.setValue(2)
        self.ColRSSB.setValue(1)
        self.KeyRSSB.setValue(1)
@@ -132,7 +132,7 @@ class DialogApp(QtWidgets.QDialog, SaveBDFrm.Ui_DBDialog):  # Форма сох�
 #################################### непосредственно сохранение таблицы в БД ###########################################
    def DBSaveFunc(self): # сохраняем таблицу в БД
        global window
-       if self.DBFileNameLb.text() != "" :
+       if self.DBFileNameLb.text() != "":
           global excel_book
           global keys
           filename = self.DBFileNameLb.text()
@@ -143,7 +143,7 @@ class DialogApp(QtWidgets.QDialog, SaveBDFrm.Ui_DBDialog):  # Форма сох�
 # начинаем заполнять таблицы БД
        #таблица RS (р/с)
 
-          if self.RSChB.isChecked() :
+          if self.RSChB.isChecked():
            try :
              cursor.execute("""CREATE TABLE IF NOT EXISTS RS (  
                Type TEXT,
@@ -153,7 +153,7 @@ class DialogApp(QtWidgets.QDialog, SaveBDFrm.Ui_DBDialog):  # Форма сох�
              """)  
              cursor.execute("DELETE FROM RS")  # Удаляем старые записи
            except:
-             QMessageBox(QMessageBox.Warning, "Внимание!!!" , "Ошибка обращения к таблице РАДИОСТАНЦИИ. Данные могут быть не сохранены!", QMessageBox.Ok).exec()                 
+             QMessageBox(QMessageBox.Warning, "Внимание!!!", "Ошибка обращения к таблице РАДИОСТАНЦИИ. Данные могут быть не сохранены!", QMessageBox.Ok).exec()
            conn.commit()  # подтверждаем удаление
            
            #проверяем правильность первоночальных условий и пишем данные
@@ -174,7 +174,7 @@ class DialogApp(QtWidgets.QDialog, SaveBDFrm.Ui_DBDialog):  # Форма сох�
                   #QMessageBox(QMessageBox.Warning, "Внимание!!!" , "Ошибка чтения данных из таблицы! Проверьте правильность заданных параметров!!!", QMessageBox.Ok).exec()                 
               try:
                 #эта пороверка сильно замедляет, но необходима... возможность добавления без проверок можно добавить в форму "Работа с БД"
-                if self.DoublChB.isChecked() :
+                if self.DoublChB.isChecked():
                  cursor.execute("SELECT * FROM RS WHERE Type = ? AND Name = ? AND Ser_Num = ? AND Man_Date = ? LIMIT 1", row)
                  if len(cursor.fetchall()) == 0 :
                   cursor.execute("INSERT INTO RS values (?,?,?,?);", row)
@@ -187,13 +187,13 @@ class DialogApp(QtWidgets.QDialog, SaveBDFrm.Ui_DBDialog):  # Форма сох�
                 #QMessageBox(QMessageBox.Warning, "Внимание!!!" , "Ошибка записи строки в базу данных! Запись в БД (РАДИОСТАНЦИИ) добавлена не будет", QMessageBox.Ok).exec()                 
               window.AllPB.setValue(i)
             if RD != 0 or WD != 0 or DUB != 0 :
-             QMessageBox(QMessageBox.Warning, "Внимание!!!" , "При формировании таблицы РАДИОСТАНЦИИ зафиксированы ошибки! Ошибок чтения "+str(RD)+"! Ошибок Записи "+str(WD)+"! Удалено дублей "+str(DUB)+"!", QMessageBox.Ok).exec()                 
+             QMessageBox(QMessageBox.Warning, "Внимание!!!", "При формировании таблицы РАДИОСТАНЦИИ зафиксированы ошибки! Ошибок чтения "+str(RD)+"! Ошибок Записи "+str(WD)+"! Удалено дублей "+str(DUB)+"!", QMessageBox.Ok).exec()
             conn.commit()     
            else :
-            QMessageBox(QMessageBox.Warning, "Внимание!!!" , "Неправильно заданы начальные условия!!! Записи в БД (РАДИОСТАНЦИИ) добавлены не будут", QMessageBox.Ok).exec()                 
+            QMessageBox(QMessageBox.Warning, "Внимание!!!", "Неправильно заданы начальные условия!!! Записи в БД (РАДИОСТАНЦИИ) добавлены не будут", QMessageBox.Ok).exec()
 
         #таблица Req (заявки)
-          if self.ReqChB.isChecked() :
+          if self.ReqChB.isChecked():
            try:       
              cursor.execute("""CREATE TABLE IF NOT EXISTS Req (
                Dep      TEXT,
@@ -205,7 +205,7 @@ class DialogApp(QtWidgets.QDialog, SaveBDFrm.Ui_DBDialog):  # Форма сох�
              """)
              cursor.execute("DELETE FROM Req")  # Удаляем старые записи
            except:
-             QMessageBox(QMessageBox.Warning, "Внимание!!!" , "Ошибка обращения к таблице ЗАЯВКИ. Данные могут быть не сохранены!", QMessageBox.Ok).exec()                 
+             QMessageBox(QMessageBox.Warning, "Внимание!!!", "Ошибка обращения к таблице ЗАЯВКИ. Данные могут быть не сохранены!", QMessageBox.Ok).exec()
            conn.commit()  # подтверждаем удаление
 
            #проверяем правильность первоночальных условий и пишем данные
@@ -220,16 +220,16 @@ class DialogApp(QtWidgets.QDialog, SaveBDFrm.Ui_DBDialog):  # Форма сох�
              sv = 1
             else :
              sv = 4
-            for i in range (self.RowReqSB.value()-1, self.RowReqSB.value()+self.ColRowReqSB.value()-1) : 
+            for i in range(self.RowReqSB.value()-1, self.RowReqSB.value()+self.ColRowReqSB.value()-1) :
               row = []
-              for j in range (self.ColReqSB.value()-1,self.ColReqSB.value() + sv) :
+              for j in range(self.ColReqSB.value()-1,self.ColReqSB.value() + sv):
                   try:
                     row.append(excel_book[keys[self.KeyReqSB.value()-1]][i][j])
                   except:
                     #QMessageBox(QMessageBox.Warning, "Внимание!!!" , "Ошибка чтения данных из таблицы! Проверьте правильность заданных параметров!!!", QMessageBox.Ok).exec()                 
                     RD += 1
               try:
-                if self.TabStatusCB.isChecked() :
+                if self.TabStatusCB.isChecked():
                  row.append(excel_book[keys[self.KeyRSSB.value()-1]][i][self.ColRSSB.value()-1+2])  
                  row.append(excel_book[keys[self.KeyRSSB.value()-1]][i][self.ColRSSB.value()-1])  
                  row.append(excel_book[keys[self.KeyRSSB.value()-1]][i][self.ColRSSB.value()-1+1])  
@@ -238,7 +238,7 @@ class DialogApp(QtWidgets.QDialog, SaveBDFrm.Ui_DBDialog):  # Форма сох�
                 #QMessageBox(QMessageBox.Warning, "Внимание!!!" , "Ошибка чтения данных из таблицы! Проверьте правильность заданных параметров!!!", QMessageBox.Ok).exec()                 
                 RD += 1
               try:
-                if row[0] != "" and row[1] != "" :
+                if row[0] != "" and row[1] != "":
                   cursor.execute("INSERT INTO Req values (?,?,?,?,?);", row)
                 else :
                   ZeroLine += 1
@@ -248,14 +248,14 @@ class DialogApp(QtWidgets.QDialog, SaveBDFrm.Ui_DBDialog):  # Форма сох�
               window.AllPB.setValue(i)
              #print(row)
             conn.commit()
-            if RD != 0 or WD != 0 or ZeroLine != 0 :
-             QMessageBox(QMessageBox.Warning, "Внимание!!!" , "При формировании таблицы ЗАЯВКИ зафиксированы ошибки! Ошибок чтения "+str(RD)+"! Ошибок Записи "+str(WD)+"! Пустых строк "+str(ZeroLine)+"!", QMessageBox.Ok).exec()                 
+            if RD != 0 or WD != 0 or ZeroLine != 0:
+             QMessageBox(QMessageBox.Warning, "Внимание!!!", "При формировании таблицы ЗАЯВКИ зафиксированы ошибки! Ошибок чтения "+str(RD)+"! Ошибок Записи "+str(WD)+"! Пустых строк "+str(ZeroLine)+"!", QMessageBox.Ok).exec()
 
            else :
-            QMessageBox(QMessageBox.Warning, "Внимание!!!" , "Неправильно заданы начальные условия!!! Записи в БД (ЗАЯВКИ) добавлены не будут", QMessageBox.Ok).exec()                 
+            QMessageBox(QMessageBox.Warning, "Внимание!!!", "Неправильно заданы начальные условия!!! Записи в БД (ЗАЯВКИ) добавлены не будут", QMessageBox.Ok).exec()
      
         # таблица Inv (счета)
-          if self.InvChB.isChecked() :
+          if self.InvChB.isChecked():
            try:
              cursor.execute("""CREATE TABLE IF NOT EXISTS Inv (
                Inv_Num  TEXT,
@@ -266,11 +266,11 @@ class DialogApp(QtWidgets.QDialog, SaveBDFrm.Ui_DBDialog):  # Форма сох�
              """)
              cursor.execute("DELETE FROM Inv")  # Удаляем старые записи
            except:
-             QMessageBox(QMessageBox.Warning, "Внимание!!!" , "Ошибка обращения к таблице СЧЕТА. Данные могут быть не сохранены!", QMessageBox.Ok).exec()                 
+             QMessageBox(QMessageBox.Warning, "Внимание!!!", "Ошибка обращения к таблице СЧЕТА. Данные могут быть не сохранены!", QMessageBox.Ok).exec()
            conn.commit()  # подтверждаем удаление
 
-           #проверяем правильность первоночальных условий и пишем данные
-           if  len(keys) >= self.KeyInvSB.value() and len(excel_book[keys[self.KeyInvSB.value()-1]]) >= self.RowInvSB.value()+self.ColRowInvSB.value()-1 and len(excel_book[keys[self.KeyInvSB.value()-1]][self.RowInvSB.value()-1]) >= self.ColInvSB.value() + 2 :
+           # проверяем правильность первоночальных условий и пишем данные
+           if  len(keys) >= self.KeyInvSB.value() and len(excel_book[keys[self.KeyInvSB.value()-1]]) >= self.RowInvSB.value()+self.ColRowInvSB.value()-1 and len(excel_book[keys[self.KeyInvSB.value()-1]][self.RowInvSB.value()-1]) >= self.ColInvSB.value() + 2:
             RD = 0
             WD = 0
             ZeroLine = 0
@@ -311,10 +311,10 @@ class DialogApp(QtWidgets.QDialog, SaveBDFrm.Ui_DBDialog):  # Форма сох�
               #print(row)
             conn.commit()
             if RD != 0 or WD != 0 or ZeroLine != 0 :
-             QMessageBox(QMessageBox.Warning, "Внимание!!!" , "При формировании таблицы СЧЕТА зафиксированы ошибки! Ошибок чтения "+str(RD)+"! Ошибок Записи "+str(WD)+"! Пустых строк "+str(ZeroLine)+"!", QMessageBox.Ok).exec()                 
+             QMessageBox(QMessageBox.Warning, "Внимание!!!", "При формировании таблицы СЧЕТА зафиксированы ошибки! Ошибок чтения "+str(RD)+"! Ошибок Записи "+str(WD)+"! Пустых строк "+str(ZeroLine)+"!", QMessageBox.Ok).exec()
 
            else :
-            QMessageBox(QMessageBox.Warning, "Внимание!!!" , "Неправильно заданы начальные условия!!! Записи в БД (СЧЕТА) добавлены не будут", QMessageBox.Ok).exec()                 
+            QMessageBox(QMessageBox.Warning, "Внимание!!!", "Неправильно заданы начальные условия!!! Записи в БД (СЧЕТА) добавлены не будут", QMessageBox.Ok).exec()
 
         # таблица ZIP (ЗИП - запчасти)
           if self.ZIPChB.isChecked() : 
@@ -352,13 +352,12 @@ class DialogApp(QtWidgets.QDialog, SaveBDFrm.Ui_DBDialog):  # Форма сох�
                 #QMessageBox(QMessageBox.Warning, "Внимание!!!" , "Ошибка записи строки в базу данных! Запись в БД (БАЗА ЗИП) добавлена не будет", QMessageBox.Ok).exec()                 
                 WD += 1
               window.AllPB.setValue(i)
-              #print(row)
             conn.commit()
             if RD != 0 or WD != 0 :
-             QMessageBox(QMessageBox.Warning, "Внимание!!!" , "При формировании таблицы БАЗА ЗИП зафиксированы ошибки! Ошибок чтения "+str(RD)+"! Ошибок Записи "+str(WD)+"!", QMessageBox.Ok).exec()                 
+             QMessageBox(QMessageBox.Warning, "Внимание!!!", "При формировании таблицы БАЗА ЗИП зафиксированы ошибки! Ошибок чтения " + str(RD) + "! Ошибок Записи " + str(WD) + "!", QMessageBox.Ok).exec()
 
            else :
-            QMessageBox(QMessageBox.Warning, "Внимание!!!" , "Неправильно заданы начальные условия!!! Записи в БД (БАЗА ЗИП) добавлены не будут", QMessageBox.Ok).exec()                 
+            QMessageBox(QMessageBox.Warning, "Внимание!!!", "Неправильно заданы начальные условия!!! Записи в БД (БАЗА ЗИП) добавлены не будут", QMessageBox.Ok).exec()
 
         # таблица Deps (Округа/подразделения)
           if self.DepsChB.isChecked() :
@@ -369,10 +368,10 @@ class DialogApp(QtWidgets.QDialog, SaveBDFrm.Ui_DBDialog):  # Форма сох�
              """)
              cursor.execute("DELETE FROM Deps")  # Удаляем старые записи
            except:
-             QMessageBox(QMessageBox.Warning, "Внимание!!!" , "Ошибка обращения к таблице ОКРУГА. Данные могут быть не сохранены!", QMessageBox.Ok).exec()                 
+             QMessageBox(QMessageBox.Warning, "Внимание!!!", "Ошибка обращения к таблице ОКРУГА. Данные могут быть не сохранены!", QMessageBox.Ok).exec()
            conn.commit()  # подтверждаем удаление
 
-           #проверяем правильность первоночальных условий и пишем данные
+           # проверяем правильность первоночальных условий и пишем данные
            if  len(keys) >= self.KeyDepsSB.value() and len(excel_book[keys[self.KeyDepsSB.value()-1]]) >= self.RowDepsSB.value()+self.ColDepsSB.value()-1 and len(excel_book[keys[self.KeyDepsSB.value()-1]][self.RowDepsSB.value()-1]) >= self.ColDepsSB.value() :
             RD = 0
             WD = 0
@@ -400,10 +399,10 @@ class DialogApp(QtWidgets.QDialog, SaveBDFrm.Ui_DBDialog):  # Форма сох�
               #print(row)
             conn.commit()
             if RD != 0 or WD != 0 :
-             QMessageBox(QMessageBox.Warning, "Внимание!!!" , "При формировании таблицы ОКРУГА зафиксированы ошибки! Ошибок чтения "+str(RD)+"! Ошибок Записи "+str(WD)+"!", QMessageBox.Ok).exec()                 
+             QMessageBox(QMessageBox.Warning, "Внимание!!!", "При формировании таблицы ОКРУГА зафиксированы ошибки! Ошибок чтения " + str(RD) + "! Ошибок Записи " + str(WD) + "!", QMessageBox.Ok).exec()
 
            else :
-            QMessageBox(QMessageBox.Warning, "Внимание!!!" , "Неправильно заданы начальные условия!!! Записи в БД (Округа) добавлены не будут", QMessageBox.Ok).exec()                 
+            QMessageBox(QMessageBox.Warning, "Внимание!!!", "Неправильно заданы начальные условия!!! Записи в БД (Округа) добавлены не будут", QMessageBox.Ok).exec()
 
         # таблица Cats (Категории работ)
           if self.CatsChB.isChecked() :
@@ -417,7 +416,7 @@ class DialogApp(QtWidgets.QDialog, SaveBDFrm.Ui_DBDialog):  # Форма сох�
              """)
              cursor.execute("DELETE FROM Cats")  # Удаляем старые записи
            except:
-             QMessageBox(QMessageBox.Warning, "Внимание!!!" , "Ошибка обращения к таблице КАТЕГОРИИ РАБОТ. Данные могут быть не сохранены!", QMessageBox.Ok).exec()                 
+             QMessageBox(QMessageBox.Warning, "Внимание!!!", "Ошибка обращения к таблице КАТЕГОРИИ РАБОТ. Данные могут быть не сохранены!", QMessageBox.Ok).exec()
            conn.commit()  # подтверждаем удаление
 
            #проверяем правильность первоночальных условий и пишем данные
@@ -428,9 +427,9 @@ class DialogApp(QtWidgets.QDialog, SaveBDFrm.Ui_DBDialog):  # Форма сох�
             window.AllPB.setFormat("%v/"+str(self.RowCatsSB.value()+self.ColRowCatsSB.value()-1))
             window.AllPB.setMaximum(self.RowCatsSB.value()+self.ColRowCatsSB.value()-1)
 
-            for i in range (self.RowCatsSB.value()-1, self.RowCatsSB.value()+self.ColRowCatsSB.value()-1) : 
+            for i in range(self.RowCatsSB.value()-1, self.RowCatsSB.value()+self.ColRowCatsSB.value()-1) :
               row = []
-              for j in range (self.ColCatsSB.value()-1,self.ColCatsSB.value() + 3) : 
+              for j in range(self.ColCatsSB.value()-1,self.ColCatsSB.value() + 3) :
                   try:
                     row.append(excel_book[keys[self.KeyCatsSB.value()-1]][i][j])
                   except:
@@ -448,14 +447,14 @@ class DialogApp(QtWidgets.QDialog, SaveBDFrm.Ui_DBDialog):  # Форма сох�
 
             conn.commit() #подтверждаем изменения
             if RD != 0 or WD != 0 :
-             QMessageBox(QMessageBox.Warning, "Внимание!!!" , "При формировании таблицы КАТЕГОРИИ РАБОТ зафиксированы ошибки! Ошибок чтения "+str(RD)+"! Ошибок Записи "+str(WD)+"!", QMessageBox.Ok).exec()                 
+             QMessageBox(QMessageBox.Warning, "Внимание!!!", "При формировании таблицы КАТЕГОРИИ РАБОТ зафиксированы ошибки! Ошибок чтения "+str(RD)+"! Ошибок Записи "+str(WD)+"!", QMessageBox.Ok).exec()
 
            else :
-            QMessageBox(QMessageBox.Warning, "Внимание!!!" , "Неправильно заданы начальные условия!!! Записи в БД (КАТЕГОРИИ РАБОТ) добавлены не будут", QMessageBox.Ok).exec()                 
+            QMessageBox(QMessageBox.Warning, "Внимание!!!", "Неправильно заданы начальные условия!!! Записи в БД (КАТЕГОРИИ РАБОТ) добавлены не будут", QMessageBox.Ok).exec()
 
            conn.close()  #и закрываем БД
        else :
-          QMessageBox(QMessageBox.Warning, "Внимание" , "Имя файла не указано! Операция выполнена не будет!", QMessageBox.Ok).exec()                 
+          QMessageBox(QMessageBox.Warning, "Внимание", "Имя файла не указано! Операция выполнена не будет!", QMessageBox.Ok).exec()
        window.AllPB.setValue(0)
        window.AllPB.setFormat("%v/0")
        window.AllPB.setMaximum(100)
@@ -543,7 +542,7 @@ class TableApp(QtWidgets.QMainWindow, OpenExelFrm.Ui_MainWindow):
      self.EDBFrm.show()
 
 ###########################  Загрузка данных в таблицу из БД #######################################
-   def DBLoadFunc(self):  #загрузка данных из БД
+   def DBLoadFunc(self):  # загрузка данных из БД
     global excel_book
     global keys
 #    my_dict = [] 
@@ -555,7 +554,7 @@ class TableApp(QtWidgets.QMainWindow, OpenExelFrm.Ui_MainWindow):
                              ") # диалог открытия файла
     if filename != "" :
 
-      keys=['Радиостанции','Заявки','Счета','База ЗИП','Округа','Категории работ'] 
+      keys=['Радиостанции', 'Заявки', 'Счета', 'База ЗИП', 'Округа', 'Категории работ']
 
       #открываем БД
       conn = sqlite3.connect(filename)
@@ -563,12 +562,11 @@ class TableApp(QtWidgets.QMainWindow, OpenExelFrm.Ui_MainWindow):
     
       self.AllPB.show()
 
-      #Заполняем excel_book из БД ключи-имена таблиц
+      # Заполняем excel_book из БД ключи-имена таблиц
       cursor.execute("SELECT * FROM RS")
       result = cursor.fetchall()
-  #    my_dict.append({keys[0]:result})
-      excel_book = OrderedDict() #создаем OrderedDict 
-      result.insert(0, ["Тип","Наименование","Серийный номер","Дата изготовления"])
+      excel_book = OrderedDict() # создаем OrderedDict
+      result.insert(0, ["Тип", "Наименование", "Серийный номер", "Дата изготовления"])
       excel_book[keys[0]]= result  # добавляем и заполняем первый ключ
       self.AllPB.setValue(16)
       
@@ -577,37 +575,32 @@ class TableApp(QtWidgets.QMainWindow, OpenExelFrm.Ui_MainWindow):
 
       cursor.execute("SELECT * FROM Req")
       result = cursor.fetchall()
-      result.insert(0,["Подразделение","Дата заявки","Серийный номер","Тип","Наименование"])
-  #    my_dict.append({keys[1]:result})
-      excel_book[keys[1]]= result #my_dict[1] # добавляем и заполняем второй ключ
+      result.insert(0, ["Подразделение", "Дата заявки", "Серийный номер", "Тип", "Наименование"])
+      excel_book[keys[1]]= result # my_dict[1] # добавляем и заполняем второй ключ
       self.AllPB.setValue(32)
 
   # и так далее для всех ключей
       cursor.execute("SELECT * FROM Inv")
       result = cursor.fetchall()
-      result.insert(0,["Номер счета","Дата счета","Стоимость","Серийный номер","Тип","Наименование"])
-  #    my_dict.append({keys[2]:result})
+      result.insert(0, ["Номер счета", "Дата счета", "Стоимость", "Серийный номер", "Тип", "Наименование"])
       excel_book[keys[2]]= result
       self.AllPB.setValue(49)
 
       cursor.execute("SELECT * FROM ZIP")
       result = cursor.fetchall()
-      result.insert(0,["Артикул","Цена"])
-  #    my_dict.append({keys[3]:result})
+      result.insert(0, ["Артикул", "Цена"])
       excel_book[keys[3]]= result
       self.AllPB.setValue(65)
 
       cursor.execute("SELECT * FROM Deps")
       result = cursor.fetchall()
-      result.insert(0,["Округ"])
-  #    my_dict.append({keys[4]:result})
+      result.insert(0, ["Округ"])
       excel_book[keys[4]]= result
       self.AllPB.setValue(81)
 
       cursor.execute("SELECT * FROM Cats")
       result = cursor.fetchall()
-      result.insert(0,["Устройство","Кат. 1","Кат. 2","Кат. 3"])
-  #    my_dict.append({keys[5]:result})
+      result.insert(0, ["Устройство", "Кат. 1", "Кат. 2", "Кат. 3"])
       excel_book[keys[5]]= result
       self.AllPB.setValue(100)
 
@@ -618,12 +611,12 @@ class TableApp(QtWidgets.QMainWindow, OpenExelFrm.Ui_MainWindow):
       self.AllPB.hide()
 
 ################################ Открытие окна сохранения БД  ######################################
-   def DBSelFunc(self): #открываем окно сохранения БД
+   def DBSelFunc(self): # открываем окно сохранения БД
       if self.tableWd.rowCount() != 0 and self.tableWd.columnCount() != 0 :
         self.DBwindow = DialogApp()
         self.DBwindow.show()
       else:
-        QMessageBox(QMessageBox.Warning, "Внимание!!!" , "Таблица не заполнена!!!", QMessageBox.Ok).exec()
+        QMessageBox(QMessageBox.Warning, "Внимание!!!", "Таблица не заполнена!!!", QMessageBox.Ok).exec()
         
 
 ########################################### Изменение выбранной страницы #######################################    
@@ -646,9 +639,9 @@ class TableApp(QtWidgets.QMainWindow, OpenExelFrm.Ui_MainWindow):
       for line in input_array:  # записываем массив в таблицу - берем строку
        self.tableWd.insertRow(l) # добавляем в таблицу строку
        for item in line:  # берем элемент из строки
-        if l == 0 : # если это первая строка - добавляем еще и столбцы 
+        if l == 0: # если это первая строка - добавляем еще и столбцы
          self.tableWd.insertColumn(r)
-        self.tableWd.setItem(l, r, QTableWidgetItem(str(item))) # пишем элемент в ячейку
+        self.tableWd.setItem(l, r, QTableWidgetItem(str(item)))  # пишем элемент в ячейку
         r = r + 1
        l = l + 1
        r = 0    
@@ -656,7 +649,7 @@ class TableApp(QtWidgets.QMainWindow, OpenExelFrm.Ui_MainWindow):
 ##################################   Открытие EXCEL файла ####################################   
    def OpenFileFunc(self):  #открытие Excel файла
      global Flag
-     global excel_book # объявляем переменные как глобальные
+     global excel_book  # объявляем переменные как глобальные
      global keys      # чтобы иметь возможность передавать значения в другие функции
 
 
@@ -666,13 +659,13 @@ class TableApp(QtWidgets.QMainWindow, OpenExelFrm.Ui_MainWindow):
                              "Exel Files(*.xlsx *.xls *.xlsm);;\
                              ") # диалог открытия файла
 
-     if filename != "" :   # если файл выбран
+     if filename != "":   # если файл выбран
       keys = []
       self.sheetSpin.setDisabled(True)
       self.sheetSpin.setValue(1)
       self.tableWd.setRowCount(0)
-      self.tableWd.setColumnCount(0) # обнуляем таблицу
-      self.SelFileName.setText(filename) # наш выбранный файл
+      self.tableWd.setColumnCount(0)  # обнуляем таблицу
+      self.SelFileName.setText(filename)  # наш выбранный файл
 
 #для файла из одной страницы      
       #my_array = pyexcel.get_array(file_name=filename) # пишем файл в массив
@@ -695,8 +688,6 @@ class TableApp(QtWidgets.QMainWindow, OpenExelFrm.Ui_MainWindow):
 # выводим массив в таблицу 
       self.FullingTable(my_array)
 
-
-
 #      r = 0
 #      l = 0
 #      for line in my_array:  # записываем массив в таблицу - берем строку
@@ -717,14 +708,13 @@ class TableApp(QtWidgets.QMainWindow, OpenExelFrm.Ui_MainWindow):
      global excel_book
      global keys
      self.AllPB.show()
-     if self.tableWd.columnCount() != 0 and self.tableWd.rowCount() !=0 :
-      save_array=[[0]*self.tableWd.columnCount()]*self.tableWd.rowCount() #инициализируем
-      array_line=[0]*self.tableWd.columnCount()                           #массивы
+     if self.tableWd.columnCount() != 0 and self.tableWd.rowCount() !=0:
+      save_array=[[0]*self.tableWd.columnCount()]*self.tableWd.rowCount()  # инициализируем
+      array_line=[0]*self.tableWd.columnCount()                           # массивы
       filename, ok = QFileDialog.getSaveFileName(self, 
                              "Сохранить файл",
                              ".",
-                             "Excel Files(*.xls *.xlsx)")    #Диалог выбора файла для сохранения
-      #ipdb.set_trace()  #вообще это отладчик-был нужен(((
+                             "Excel Files(*.xls *.xlsx)")    # Диалог выбора файла для сохранения
       if filename != "" :
        try:
         r=0
@@ -732,19 +722,18 @@ class TableApp(QtWidgets.QMainWindow, OpenExelFrm.Ui_MainWindow):
         self.AllPB.setMaximum(self.tableWd.rowCount())
         self.AllPB.setFormat("%v/"+str(self.tableWd.rowCount()))
         self.AllPB.setValue(0)
-        while l < self.tableWd.rowCount() :
-         while r < self.tableWd.columnCount() :     
-          array_line[r] = self.tableWd.item(l, r).text() # набираем строку
-          r=r+1
-         save_array[l] = array_line  # записываем строку в выходной массив
-         array_line = [0]*self.tableWd.columnCount() # обнуляем массив-строку, иначе, при его изменении
-         r=0                                        # продолжаеи меняться и выходной массив...
-         l=l+1
-         self.AllPB.setValue(l);
-       # try : сделано для всего блока
+        while l < self.tableWd.rowCount():
+             while r < self.tableWd.columnCount():
+                array_line[r] = self.tableWd.item(l, r).text()  # набираем строку
+                r=r+1
+             save_array[l] = array_line  # записываем строку в выходной массив
+             array_line = [0]*self.tableWd.columnCount() # обнуляем массив-строку, иначе, при его изменении
+             r=0                                        # продолжаеи меняться и выходной массив...
+             l=l+1
+             self.AllPB.setValue(l);
         pyexcel.save_as(array=save_array, dest_file_name=filename) # сохраняем массив в файл
        except :
-        QMessageBox(QMessageBox.Warning, "Ошибка" , "Имя файла указано неверно!", QMessageBox.Ok).exec()
+        QMessageBox(QMessageBox.Warning, "Ошибка", "Имя файла указано неверно!", QMessageBox.Ok).exec()
       filename = ""
       self.AllPB.setValue(0)
       self.AllPB.setFormat("%v/0")
@@ -760,20 +749,11 @@ class TableApp(QtWidgets.QMainWindow, OpenExelFrm.Ui_MainWindow):
                              ".",
                              "Excel Files(*.xls *.xlsx)")    #Диалог выбора файла для сохранения
         if filename != "" :
-         
-#         try :
-#           pyexcel.save_book_as(bookdict=excel_book, dest_file_name=filename)
-#         except :
-#           QMessageBox(QMessageBox.Warning, "Ошибка" , "Имя файла указано неверно!", QMessageBox.Ok).exec()
-
           self.AllPB.show()
           Flag = 1
           threadSE = self.SaveExcelThread("trSE", 2, filename)
           threadSE.start()
-
-#          excel_book = pyexcel.get_book_dict(file_name=filename) # сохраняем всю книгу в коллекцию
           self.RollPB()
-
           Flag = 0
           threadSE.join()
         filename = ""
